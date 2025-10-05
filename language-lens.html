@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Language Lens</title>
+    <title>Language Features Reference</title>
     <style>
         * {
             margin: 0;
@@ -86,6 +86,35 @@
             font-size: 1.1rem;
         }
 
+        .filter-controls {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .category-filter {
+            padding: 0.75rem 1.25rem;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 0.375rem;
+            background: white;
+            color: #475569;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .category-filter:hover {
+            border-color: #1e3a5f;
+            background: #f8fafc;
+        }
+
+        .category-filter.active {
+            background: #1e3a5f;
+            color: white;
+            border-color: #1e3a5f;
+        }
+
         .mode-toggle {
             background: #1e3a5f;
             color: white;
@@ -105,14 +134,10 @@
             box-shadow: 0 4px 12px rgba(30, 58, 95, 0.2);
         }
 
-        .mode-toggle:active {
-            transform: translateY(0);
-        }
-
         /* Reference Gallery Mode */
         .gallery {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
             gap: 2rem;
         }
 
@@ -159,6 +184,17 @@
             color: #1e3a5f;
         }
 
+        .category-tag {
+            display: inline-block;
+            font-size: 0.75rem;
+            color: #64748b;
+            background: #f1f5f9;
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.25rem;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+
         .definition {
             color: #475569;
             margin-bottom: 1.25rem;
@@ -203,7 +239,7 @@
         }
 
         .purpose-section .section-label {
-            color: #92400e;
+            color: #6b21a8;
         }
 
         .effect-text {
@@ -245,7 +281,7 @@
         }
 
         .purpose-section .questions-list li::before {
-            color: #92400e;
+            color: #6b21a8;
         }
 
         .questions-list li:last-child {
@@ -261,7 +297,7 @@
         }
 
         .purpose-heading {
-            color: #b45309;
+            color: #7c3aed;
             font-weight: 600;
             font-size: 0.875rem;
             margin-bottom: 0.25rem;
@@ -277,7 +313,7 @@
         /* Flashcard Mode */
         .flashcard-container {
             display: none;
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
         }
 
@@ -290,7 +326,7 @@
             border-radius: 0.5rem;
             padding: 3.5rem 3rem;
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-            min-height: 450px;
+            min-height: 500px;
             cursor: pointer;
             transition: all 0.3s;
         }
@@ -307,7 +343,7 @@
             font-size: 2.75rem;
             color: #1e3a5f;
             justify-content: center;
-            margin-bottom: 2.5rem;
+            margin-bottom: 1.5rem;
         }
 
         .flashcard-front .tap-hint {
@@ -413,7 +449,7 @@
                 background: white;
             }
 
-            .controls, .mode-toggle, .bookmark-btn {
+            .controls, .mode-toggle, .bookmark-btn, .filter-controls {
                 display: none !important;
             }
 
@@ -422,6 +458,7 @@
                 page-break-inside: avoid;
                 box-shadow: none;
                 border: 1px solid #e2e8f0;
+                margin-bottom: 1rem;
             }
         }
     </style>
@@ -429,8 +466,8 @@
 <body>
     <div class="container">
         <header>
-            <h1>Language Lens</h1>
-            <p class="subtitle">A comprehensive guide to literary and language devices for text analysis</p>
+            <h1>Language Features Reference</h1>
+            <p class="subtitle">A comprehensive guide to literary devices, grammar, and sentence structure for text analysis</p>
             
             <div class="controls">
                 <div class="search-box">
@@ -439,20 +476,26 @@
                 </div>
                 <button class="mode-toggle" id="modeToggle">Switch to Flashcard Mode</button>
             </div>
+            
+            <div class="filter-controls" id="filterControls" style="margin-top: 1.5rem;">
+                <button class="category-filter active" data-category="all">All Features</button>
+            </div>
         </header>
 
         <!-- Reference Gallery Mode -->
         <div class="gallery" id="gallery"></div>
-        <div class="no-results hidden" id="noResults">No features found matching your search.</div>
+        <div class="no-results hidden" id="noResults">No features found matching your search or filter.</div>
 
         <!-- Flashcard Mode -->
         <div class="flashcard-container" id="flashcardContainer">
             <div class="flashcard" id="flashcard">
                 <div class="flashcard-front">
+                    <div class="category-tag" id="flashcardCategoryFront"></div>
                     <div class="feature-name" id="flashcardName"></div>
                     <p class="tap-hint">Click to reveal details ▼</p>
                 </div>
                 <div class="flashcard-back">
+                    <div class="category-tag" id="flashcardCategory"></div>
                     <div class="feature-name" id="flashcardNameBack"></div>
                     <div class="definition" id="flashcardDefinition"></div>
                     <div class="example" id="flashcardExample"></div>
@@ -471,13 +514,13 @@
 
     <script>
         // Access check - UNCOMMENT THIS IN PRODUCTION
-        // (function checkAccess() {
-        //     const accessCode = localStorage.getItem('languageFeaturesAccess');
-        //     if (!accessCode) {
-        //         window.location.href = 'index.html';
-        //         return;
-        //     }
-        // })();
+        (function checkAccess() {
+             const accessCode = localStorage.getItem('languageFeaturesAccess');
+             if (!accessCode) {
+                 window.location.href = 'index.html';
+                 return;
+             }
+        })();
 
         const features = [
             // SOUND DEVICES
@@ -1292,12 +1335,14 @@
                 }
             }
         ];
-        // Sort features alphabetically
-        features.sort((a, b) => a.name.localeCompare(b.name));
+
+        // Extract unique categories
+        const categories = ['all', ...new Set(features.map(f => f.category))];
 
         // State
         let currentMode = 'gallery';
         let currentCardIndex = 0;
+        let currentCategory = 'all';
         let filteredFeatures = [...features];
         let bookmarks = JSON.parse(localStorage.getItem('languageFeatureBookmarks') || '[]');
 
@@ -1311,9 +1356,56 @@
         const prevBtn = document.getElementById('prevBtn');
         const nextBtn = document.getElementById('nextBtn');
         const counter = document.getElementById('counter');
+        const filterControls = document.getElementById('filterControls');
 
-        // Initialize
+        // Create category filter buttons
+        categories.forEach(cat => {
+            if (cat === 'all') return; // Already added in HTML
+            const btn = document.createElement('button');
+            btn.className = 'category-filter';
+            btn.dataset.category = cat;
+            btn.textContent = cat;
+            btn.addEventListener('click', () => filterByCategory(cat));
+            filterControls.appendChild(btn);
+        });
+
+        // Initialise
         renderGallery();
+
+        // Filter by category
+        function filterByCategory(category) {
+            currentCategory = category;
+            
+            // Update button states
+            document.querySelectorAll('.category-filter').forEach(btn => {
+                btn.classList.remove('active');
+                if ((category === 'all' && btn.dataset.category === 'all') || 
+                    btn.dataset.category === category) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            // Apply filter
+            applyFilters();
+        }
+
+        // Apply all filters (category + search)
+        function applyFilters() {
+            const searchTerm = searchInput.value.toLowerCase();
+            
+            filteredFeatures = features.filter(f => {
+                const matchesCategory = currentCategory === 'all' || f.category === currentCategory;
+                const matchesSearch = !searchTerm || 
+                    f.name.toLowerCase().includes(searchTerm) ||
+                    f.definition.toLowerCase().includes(searchTerm) ||
+                    f.effect.toLowerCase().includes(searchTerm) ||
+                    f.category.toLowerCase().includes(searchTerm);
+                
+                return matchesCategory && matchesSearch;
+            });
+            
+            renderGallery();
+        }
 
         // Mode Toggle
         modeToggle.addEventListener('click', () => {
@@ -1324,6 +1416,7 @@
                 flashcardContainer.classList.add('active');
                 modeToggle.textContent = 'Switch to Reference Mode';
                 searchInput.disabled = true;
+                filterControls.style.display = 'none';
                 renderFlashcard();
             } else {
                 currentMode = 'gallery';
@@ -1331,19 +1424,14 @@
                 flashcardContainer.classList.remove('active');
                 modeToggle.textContent = 'Switch to Flashcard Mode';
                 searchInput.disabled = false;
+                filterControls.style.display = 'flex';
                 flashcard.classList.remove('flipped');
             }
         });
 
         // Search
-        searchInput.addEventListener('input', (e) => {
-            const searchTerm = e.target.value.toLowerCase();
-            filteredFeatures = features.filter(f => 
-                f.name.toLowerCase().includes(searchTerm) ||
-                f.definition.toLowerCase().includes(searchTerm) ||
-                f.effect.toLowerCase().includes(searchTerm)
-            );
-            renderGallery();
+        searchInput.addEventListener('input', () => {
+            applyFilters();
         });
 
         // Render Gallery
@@ -1366,6 +1454,7 @@
                 const questionsList = feature.questions.map(q => `<li>${q}</li>`).join('');
                 
                 card.innerHTML = `
+                    <div class="category-tag">${feature.category}</div>
                     <div class="feature-name">
                         <span>${feature.name}</span>
                         <button class="bookmark-btn ${isBookmarked ? 'active' : ''}" data-name="${feature.name}">
@@ -1434,6 +1523,8 @@
             
             const questionsList = feature.questions.map(q => `<li>${q}</li>`).join('');
             
+            document.getElementById('flashcardCategoryFront').textContent = feature.category;
+            document.getElementById('flashcardCategory').textContent = feature.category;
             document.getElementById('flashcardName').textContent = feature.name;
             document.getElementById('flashcardNameBack').textContent = feature.name;
             document.getElementById('flashcardDefinition').textContent = feature.definition;
@@ -1503,6 +1594,9 @@
                 }
             }
         });
+
+        // Add click handler for "All Features" button
+        document.querySelector('[data-category="all"]').addEventListener('click', () => filterByCategory('all'));
     </script>
 </body>
 </html>
