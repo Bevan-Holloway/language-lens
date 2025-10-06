@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Language Features Reference</title>
+    <title>Language Lens</title>
     <style>
         * {
             margin: 0;
@@ -134,6 +134,147 @@
             box-shadow: 0 4px 12px rgba(30, 58, 95, 0.2);
         }
 
+        /* Daily Quote Section - Collapsible */
+        .daily-quote-section {
+            background: white;
+            padding: 1.5rem 3rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease-in-out;
+            margin-bottom: 2.5rem;
+        }
+
+        .collapsible-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            color: #1e3a5f;
+        }
+        .collapsible-header span:first-child {
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+
+        .toggle-icon {
+            transition: transform 0.3s ease;
+            font-size: 1.2rem;
+            color: #64748b;
+        }
+
+        .daily-quote-section.expanded .toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        .collapsible-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out;
+        }
+
+        .daily-quote-section.expanded .collapsible-content {
+            max-height: 2000px; /* Adjust if content is taller */
+            transition: max-height 0.5s ease-in;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e2e8f0;
+            margin-top: 1.5rem;
+        }
+        
+        .quote-content {
+            margin-bottom: 2rem;
+        }
+
+        .daily-quote-section blockquote {
+            font-size: 1.25rem;
+            font-style: italic;
+            color: #334155;
+            border-left: 4px solid #1e3a5f;
+            padding-left: 1.5rem;
+            margin: 0 0 1rem 0;
+            line-height: 1.6;
+        }
+
+        .daily-quote-section cite {
+            display: block;
+            text-align: right;
+            color: #64748b;
+            font-style: normal;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+        
+        .technique-tags {
+            margin-bottom: 1.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .technique-tag-link {
+            font-size: 0.75rem;
+            color: #64748b;
+            background: #f1f5f9;
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.25rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .technique-tag-link:hover {
+            background: #e2e8f0;
+            color: #1e3a5f;
+        }
+
+        /* Analysis Section (for explanation) - Match card's effect section */
+        .analysis-section {
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            padding: 1.25rem 1.5rem;
+            border-radius: 0.375rem;
+            border: 1px solid #bae6fd;
+            margin-bottom: 1rem;
+        }
+
+        .section-label {
+            color: #0c4a6e;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .effect-text {
+            color: #334155;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+        .effect-text:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Purpose Section (for why it matters) - Match card's purpose section */
+        .purpose-section {
+            background: linear-gradient(135deg, #fffbf5, #fef5e7);
+            padding: 1.25rem 1.5rem;
+            border-radius: 0.375rem;
+            border: 1px solid #fde8cc;
+        }
+
+        .purpose-section .section-label {
+            color: #6b21a8;
+        }
+        .purpose-section .effect-text {
+            font-style: italic;
+        }
+
+        .purpose-item {
+            margin-bottom: 0.875rem;
+        }
+        .purpose-item:last-child {
+            margin-bottom: 0;
+        }
+
         /* Reference Gallery Mode */
         .gallery {
             display: grid;
@@ -215,41 +356,6 @@
             line-height: 1.6;
         }
 
-        .analysis-section {
-            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
-            padding: 1.25rem 1.5rem;
-            border-radius: 0.375rem;
-            border: 1px solid #bae6fd;
-            margin-bottom: 1rem;
-        }
-
-        .purpose-section {
-            background: linear-gradient(135deg, #fffbf5, #fef5e7);
-            padding: 1.25rem 1.5rem;
-            border-radius: 0.375rem;
-            border: 1px solid #fde8cc;
-        }
-
-        .section-label {
-            color: #0c4a6e;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            font-size: 0.875rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .purpose-section .section-label {
-            color: #6b21a8;
-        }
-
-        .effect-text {
-            color: #334155;
-            line-height: 1.6;
-            margin-bottom: 1rem;
-            font-size: 0.95rem;
-        }
-
         .analysis-questions {
             color: #0c4a6e;
             font-weight: 600;
@@ -289,22 +395,14 @@
             margin-bottom: 0;
         }
 
-        .purpose-item {
-            margin-bottom: 0.875rem;
-        }
-
-        .purpose-item:last-child {
-            margin-bottom: 0;
-        }
-
-        .purpose-heading {
+        .purpose-item .purpose-heading {
             color: #7c3aed;
             font-weight: 600;
             font-size: 0.875rem;
             margin-bottom: 0.25rem;
         }
 
-        .purpose-text {
+        .purpose-item .purpose-text {
             color: #334155;
             font-size: 0.9rem;
             line-height: 1.5;
@@ -474,6 +572,7 @@
             background: white;
             border-radius: 0.5rem;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            margin-bottom: 2.5rem;
         }
 
         @media (max-width: 768px) {
@@ -487,6 +586,16 @@
 
             h1 {
                 font-size: 1.75rem;
+            }
+
+            .daily-quote-section {
+                padding: 1rem 1.5rem;
+            }
+             .collapsible-header span:first-child {
+                font-size: 1.25rem;
+            }
+            .daily-quote-section blockquote {
+                font-size: 1.1rem;
             }
 
             .gallery {
@@ -525,7 +634,7 @@
                 background: white;
             }
 
-            .controls, .mode-toggle, .bookmark-btn, .filter-controls {
+            .controls, .mode-toggle, .bookmark-btn, .filter-controls, .daily-quote-section {
                 display: none !important;
             }
 
@@ -558,41 +667,54 @@
             </div>
         </header>
 
-        <!-- Reference Gallery Mode -->
-        <div class="gallery" id="gallery"></div>
-        <div class="no-results hidden" id="noResults">No features found matching your search or filter.</div>
+        <main>
+            <section class="daily-quote-section" id="dailyQuoteSection">
+                <h2 class="collapsible-header" id="quoteHeader">
+                    <span>Daily Quote Analysis 💡</span>
+                    <span class="toggle-icon">▼</span>
+                </h2>
+                <div class="collapsible-content" id="quoteContent">
+                    <div class="quote-content">
+                        <blockquote id="dailyQuoteText"></blockquote>
+                        <cite id="dailyQuoteSource"></cite>
+                    </div>
+                    <div id="dailyQuoteAnalysis"></div>
+                </div>
+            </section>
 
-        <!-- Modal Overlay -->
-        <div class="modal-overlay" id="modalOverlay">
-            <div class="modal-content" id="modalContent">
-                <div class="modal-inner">
-                    <button class="modal-close" id="modalClose">&times;</button>
-                    <div id="modalBody"></div>
+            <div class="gallery" id="gallery"></div>
+            <div class="no-results hidden" id="noResults">No features found matching your search or filter.</div>
+
+            <div class="flashcard-container" id="flashcardContainer">
+                <div class="flashcard" id="flashcard">
+                    <div class="flashcard-front">
+                        <div class="category-tag" id="flashcardCategoryFront"></div>
+                        <div class="feature-name" id="flashcardName"></div>
+                        <p class="tap-hint">Click to reveal details ▼</p>
+                    </div>
+                    <div class="flashcard-back">
+                        <div class="category-tag" id="flashcardCategory"></div>
+                        <div class="feature-name" id="flashcardNameBack"></div>
+                        <div class="definition" id="flashcardDefinition"></div>
+                        <div class="example" id="flashcardExample"></div>
+                        <div class="analysis-section" id="flashcardAnalysis"></div>
+                    </div>
+                </div>
+                
+                <div class="flashcard-navigation">
+                    <button class="nav-btn" id="prevBtn">← Previous</button>
+                    <div class="card-counter" id="counter"></div>
+                    <button class="nav-btn" id="nextBtn">Next →</button>
                 </div>
             </div>
-        </div>
+        </main>
+    </div>
 
-        <!-- Flashcard Mode -->
-        <div class="flashcard-container" id="flashcardContainer">
-            <div class="flashcard" id="flashcard">
-                <div class="flashcard-front">
-                    <div class="category-tag" id="flashcardCategoryFront"></div>
-                    <div class="feature-name" id="flashcardName"></div>
-                    <p class="tap-hint">Click to reveal details ▼</p>
-                </div>
-                <div class="flashcard-back">
-                    <div class="category-tag" id="flashcardCategory"></div>
-                    <div class="feature-name" id="flashcardNameBack"></div>
-                    <div class="definition" id="flashcardDefinition"></div>
-                    <div class="example" id="flashcardExample"></div>
-                    <div class="analysis-section" id="flashcardAnalysis"></div>
-                </div>
-            </div>
-            
-            <div class="flashcard-navigation">
-                <button class="nav-btn" id="prevBtn">← Previous</button>
-                <div class="card-counter" id="counter"></div>
-                <button class="nav-btn" id="nextBtn">Next →</button>
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content" id="modalContent">
+            <div class="modal-inner">
+                <button class="modal-close" id="modalClose">&times;</button>
+                <div id="modalBody"></div>
             </div>
         </div>
     </div>
@@ -1412,6 +1534,41 @@
             }
         ];
 
+        const dailyQuotes = [
+            {
+                text: "The mass of men lead lives of quiet desperation.",
+                author: "Henry David Thoreau",
+                source: "Walden (1854)",
+                techniques: ["Hyperbole", "Alliteration"],
+                analysis: "Thoreau uses <strong>hyperbole</strong> to make the provocative claim that most people live in 'quiet desperation'. This exaggeration is amplified by the soft <strong>alliteration</strong> in 'lead lives', which adds to the sense of hushed, unspoken suffering. Together, these techniques create a powerful and memorable critique of conformity.",
+                matters: "By moving beyond a simple observation to a grand, dramatic statement, Thoreau forces the reader to confront their own life. The analysis isn't just about societal critique; it's a personal challenge. It prompts us to question whether our own pursuit of stability and social acceptance has come at the cost of genuine fulfillment, turning a sociological observation into a timeless philosophical question about what it means to live an authentic life."
+            },
+            {
+                text: "It was the best of times, it was the worst of times...",
+                author: "Charles Dickens",
+                source: "A Tale of Two Cities (1859)",
+                techniques: ["Anaphora", "Antithesis", "Parallel Structure"],
+                analysis: "Dickens employs <strong>anaphora</strong> by repeating the phrase 'it was the' to build a powerful, rhythmic cadence. This repetition structures a series of direct contrasts, or <strong>antithesis</strong> ('best'/'worst', 'wisdom'/'foolishness'). The use of <strong>parallel structure</strong> across these clauses gives the contradictions a sense of epic scale and balance.",
+                matters: "This opening immediately establishes the novel's central theme of duality. Rather than presenting a simple view of the past, the language forces the reader to hold opposing ideas in their mind simultaneously. This complexity suggests that truth is not simple and that every era is defined by its contradictions, setting the stage for a story where personal and political loyalties are constantly in conflict."
+            },
+            {
+                text: "Because I could not stop for Death – He kindly stopped for me –",
+                author: "Emily Dickinson",
+                source: "Poem 712 (c. 1863)",
+                techniques: ["Personification", "Irony", "Caesura"],
+                analysis: "Dickinson uses <strong>personification</strong> to portray Death as a polite gentleman in a carriage. This gentle image is contrasted with the reality of death, creating a profound <strong>irony</strong>. The <strong>caesura</strong> (the dash) creates a pause, forcing the reader to contemplate this strange, courteous image of mortality before the line concludes.",
+                matters: "By transforming death from a terrifying force into a gentle suitor, the poem challenges our fundamental fears. The analysis shows how this gentle tone creates a contemplative mood, allowing the speaker to explore the journey towards the afterlife without fear. It reframes mortality not as an end, but as a transition, prompting a deeper reflection on the nature of eternity and our place within it."
+            },
+            {
+                text: "All the world's a stage, And all the men and women merely players;",
+                author: "William Shakespeare",
+                source: "As You Like It (c. 1599)",
+                techniques: ["Metaphor", "Parallel Structure"],
+                analysis: "Shakespeare uses a direct <strong>metaphor</strong> to frame life as a theatrical performance, stating the world <strong>is</strong> a stage. This comparison is extended through <strong>parallel structure</strong> in the two lines ('All the...'), creating a balanced, memorable rhythm that gives the idea a sense of universal truth.",
+                matters: "This metaphor provides a powerful framework for understanding human existence. It suggests our lives follow a pre-written script with set roles, entrances, and exits. This perspective can feel fatalistic, but it also connects every individual's personal story to a larger, shared human drama, highlighting the common experiences that unite us across time."
+            },
+        ];
+
         const categories = ['all', ...new Set(features.map(f => f.category))];
         let currentMode = 'gallery';
         let currentCardIndex = 0;
@@ -1432,6 +1589,64 @@
         const modalOverlay = document.getElementById('modalOverlay');
         const modalClose = document.getElementById('modalClose');
         const modalBody = document.getElementById('modalBody');
+        
+        // Quote Section Elements
+        const quoteSection = document.getElementById('dailyQuoteSection');
+        const quoteHeader = document.getElementById('quoteHeader');
+        const dailyQuoteText = document.getElementById('dailyQuoteText');
+        const dailyQuoteSource = document.getElementById('dailyQuoteSource');
+        const dailyQuoteAnalysis = document.getElementById('dailyQuoteAnalysis');
+
+        function displayDailyQuote() {
+            function getDayOfYear() {
+                const now = new Date();
+                const start = new Date(now.getFullYear(), 0, 0);
+                const diff = now - start;
+                const oneDay = 1000 * 60 * 60 * 24;
+                return Math.floor(diff / oneDay);
+            }
+
+            const dayIndex = getDayOfYear() % dailyQuotes.length;
+            const quote = dailyQuotes[dayIndex];
+
+            dailyQuoteText.innerHTML = `“${quote.text}”`;
+            dailyQuoteSource.textContent = `— ${quote.author}, ${quote.source}`;
+            
+            const techniqueTagsHtml = quote.techniques.map(tech => 
+                `<span class="technique-tag-link" data-feature="${tech}">${tech}</span>`
+            ).join('');
+
+            dailyQuoteAnalysis.innerHTML = `
+                <div class="technique-tags">${techniqueTagsHtml}</div>
+                <div class="analysis-section">
+                    <div class="section-label">Analysis</div>
+                    <div class="effect-text">${quote.analysis}</div>
+                </div>
+                <div class="purpose-section">
+                    <div class="section-label">Why it Matters</div>
+                    <div class="effect-text">${quote.matters}</div>
+                </div>
+            `;
+        }
+
+        quoteHeader.addEventListener('click', () => {
+            quoteSection.classList.toggle('expanded');
+        });
+
+        dailyQuoteAnalysis.addEventListener('click', (e) => {
+            const tag = e.target.closest('.technique-tag-link');
+            if (tag) {
+                const featureName = tag.dataset.feature;
+                if (currentMode === 'flashcard') {
+                    modeToggle.click();
+                }
+                searchInput.value = featureName;
+                filterByCategory('all');
+                applyFilters();
+                searchInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                searchInput.focus();
+            }
+        });
 
         categories.forEach(cat => {
             if (cat === 'all') return;
@@ -1442,7 +1657,8 @@
             btn.addEventListener('click', () => filterByCategory(cat));
             filterControls.appendChild(btn);
         });
-
+        
+        displayDailyQuote();
         renderGallery();
 
         function filterByCategory(category) {
@@ -1483,12 +1699,12 @@
                 renderFlashcard();
             } else {
                 currentMode = 'gallery';
-                gallery.classList.remove('hidden');
                 flashcardContainer.classList.remove('active');
                 modeToggle.textContent = 'Switch to Flashcard Mode';
                 searchInput.disabled = false;
                 filterControls.style.display = 'flex';
                 flashcard.classList.remove('flipped');
+                applyFilters();
             }
         });
 
@@ -1498,9 +1714,11 @@
             gallery.innerHTML = '';
             if (filteredFeatures.length === 0) {
                 noResults.classList.remove('hidden');
+                gallery.classList.add('hidden');
                 return;
             }
             noResults.classList.add('hidden');
+            gallery.classList.remove('hidden');
             
             filteredFeatures.forEach((feature) => {
                 const card = document.createElement('div');
@@ -1521,7 +1739,7 @@
                     <div class="analysis-section">
                         <div class="section-label">Effect</div>
                         <div class="effect-text">${feature.effect}</div>
-                        <div class="analysis-questions">When Analysing language, Ask</div>
+                        <div class="analysis-questions">When Analysing Language, Ask</div>
                         <ul class="questions-list">${questionsList}</ul>
                     </div>
                     <div class="purpose-section">
