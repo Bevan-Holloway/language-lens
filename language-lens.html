@@ -147,6 +147,7 @@
             padding: 2rem;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
             transition: all 0.3s;
+            cursor: pointer;
         }
 
         .feature-card:hover {
@@ -310,6 +311,68 @@
             font-style: italic;
         }
 
+        /* Modal Overlay */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1000;
+            overflow-y: auto;
+            padding: 2rem 1rem;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 0.5rem;
+            max-width: 900px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            margin: auto;
+        }
+
+        .modal-inner {
+            padding: 2.5rem 3rem;
+        }
+
+        .modal-close {
+            position: sticky;
+            top: 0;
+            right: 0;
+            float: right;
+            background: #1e3a5f;
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            z-index: 1;
+            margin-bottom: 1rem;
+        }
+
+        .modal-close:hover {
+            background: #2c4a6f;
+            transform: scale(1.1);
+        }
+
         /* Flashcard Mode */
         .flashcard-container {
             display: none;
@@ -442,6 +505,19 @@
             .flashcard-front .feature-name {
                 font-size: 2rem;
             }
+
+            .modal-overlay {
+                padding: 1rem;
+            }
+
+            .modal-inner {
+                padding: 1.5rem;
+            }
+
+            .modal-content {
+                width: 95%;
+                max-height: 85vh;
+            }
         }
 
         @media print {
@@ -486,6 +562,16 @@
         <div class="gallery" id="gallery"></div>
         <div class="no-results hidden" id="noResults">No features found matching your search or filter.</div>
 
+        <!-- Modal Overlay -->
+        <div class="modal-overlay" id="modalOverlay">
+            <div class="modal-content" id="modalContent">
+                <div class="modal-inner">
+                    <button class="modal-close" id="modalClose">&times;</button>
+                    <div id="modalBody"></div>
+                </div>
+            </div>
+        </div>
+
         <!-- Flashcard Mode -->
         <div class="flashcard-container" id="flashcardContainer">
             <div class="flashcard" id="flashcard">
@@ -500,7 +586,6 @@
                     <div class="definition" id="flashcardDefinition"></div>
                     <div class="example" id="flashcardExample"></div>
                     <div class="analysis-section" id="flashcardAnalysis"></div>
-                    <div class="purpose-section" id="flashcardPurpose"></div>
                 </div>
             </div>
             
@@ -513,15 +598,6 @@
     </div>
 
     <script>
-        // Access check - UNCOMMENT THIS IN PRODUCTION
-        (function checkAccess() {
-             const accessCode = localStorage.getItem('languageFeaturesAccess');
-             if (!accessCode) {
-                 window.location.href = 'index.html';
-                 return;
-             }
-        })();
-
         const features = [
             // SOUND DEVICES
             {
@@ -1336,17 +1412,13 @@
             }
         ];
 
-        // Extract unique categories
         const categories = ['all', ...new Set(features.map(f => f.category))];
-
-        // State
         let currentMode = 'gallery';
         let currentCardIndex = 0;
         let currentCategory = 'all';
         let filteredFeatures = [...features];
         let bookmarks = JSON.parse(localStorage.getItem('languageFeatureBookmarks') || '[]');
 
-        // Elements
         const gallery = document.getElementById('gallery');
         const flashcardContainer = document.getElementById('flashcardContainer');
         const modeToggle = document.getElementById('modeToggle');
@@ -1357,10 +1429,12 @@
         const nextBtn = document.getElementById('nextBtn');
         const counter = document.getElementById('counter');
         const filterControls = document.getElementById('filterControls');
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalClose = document.getElementById('modalClose');
+        const modalBody = document.getElementById('modalBody');
 
-        // Create category filter buttons
         categories.forEach(cat => {
-            if (cat === 'all') return; // Already added in HTML
+            if (cat === 'all') return;
             const btn = document.createElement('button');
             btn.className = 'category-filter';
             btn.dataset.category = cat;
@@ -1369,14 +1443,10 @@
             filterControls.appendChild(btn);
         });
 
-        // Initialise
         renderGallery();
 
-        // Filter by category
         function filterByCategory(category) {
             currentCategory = category;
-            
-            // Update button states
             document.querySelectorAll('.category-filter').forEach(btn => {
                 btn.classList.remove('active');
                 if ((category === 'all' && btn.dataset.category === 'all') || 
@@ -1384,15 +1454,11 @@
                     btn.classList.add('active');
                 }
             });
-            
-            // Apply filter
             applyFilters();
         }
 
-        // Apply all filters (category + search)
         function applyFilters() {
             const searchTerm = searchInput.value.toLowerCase();
-            
             filteredFeatures = features.filter(f => {
                 const matchesCategory = currentCategory === 'all' || f.category === currentCategory;
                 const matchesSearch = !searchTerm || 
@@ -1400,14 +1466,11 @@
                     f.definition.toLowerCase().includes(searchTerm) ||
                     f.effect.toLowerCase().includes(searchTerm) ||
                     f.category.toLowerCase().includes(searchTerm);
-                
                 return matchesCategory && matchesSearch;
             });
-            
             renderGallery();
         }
 
-        // Mode Toggle
         modeToggle.addEventListener('click', () => {
             if (currentMode === 'gallery') {
                 currentMode = 'flashcard';
@@ -1429,28 +1492,20 @@
             }
         });
 
-        // Search
-        searchInput.addEventListener('input', () => {
-            applyFilters();
-        });
+        searchInput.addEventListener('input', applyFilters);
 
-        // Render Gallery
         function renderGallery() {
             gallery.innerHTML = '';
-            
             if (filteredFeatures.length === 0) {
                 noResults.classList.remove('hidden');
                 return;
             }
-            
             noResults.classList.add('hidden');
             
             filteredFeatures.forEach((feature) => {
                 const card = document.createElement('div');
                 card.className = 'feature-card';
-                
                 const isBookmarked = bookmarks.includes(feature.name);
-                
                 const questionsList = feature.questions.map(q => `<li>${q}</li>`).join('');
                 
                 card.innerHTML = `
@@ -1466,13 +1521,11 @@
                     <div class="analysis-section">
                         <div class="section-label">Effect</div>
                         <div class="effect-text">${feature.effect}</div>
-                        <div class="analysis-questions">When Analysing, Ask</div>
-                        <ul class="questions-list">
-                            ${questionsList}
-                        </ul>
+                        <div class="analysis-questions">When Analysing language, Ask</div>
+                        <ul class="questions-list">${questionsList}</ul>
                     </div>
                     <div class="purpose-section">
-                        <div class="section-label">Why This Matters</div>
+                        <div class="section-label">When Analysing Why This Matters, You Can</div>
                         <div class="purpose-item">
                             <div class="purpose-heading">Connect to the Wider World:</div>
                             <div class="purpose-text">${feature.purposes.connect}</div>
@@ -1492,20 +1545,23 @@
                     </div>
                 `;
                 
+                card.addEventListener('click', (e) => {
+                    if (!e.target.closest('.bookmark-btn')) {
+                        openModal(feature);
+                    }
+                });
+                
                 gallery.appendChild(card);
             });
 
-            // Bookmark handlers
             document.querySelectorAll('.bookmark-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     e.stopPropagation();
-                    const name = btn.dataset.name;
-                    toggleBookmark(name);
+                    toggleBookmark(btn.dataset.name);
                 });
             });
         }
 
-        // Bookmark toggle
         function toggleBookmark(name) {
             const index = bookmarks.indexOf(name);
             if (index > -1) {
@@ -1517,12 +1573,55 @@
             renderGallery();
         }
 
-        // Flashcard functionality
+        function openModal(feature) {
+            const questionsList = feature.questions.map(q => `<li>${q}</li>`).join('');
+            modalBody.innerHTML = `
+                <div class="category-tag">${feature.category}</div>
+                <div class="feature-name"><span>${feature.name}</span></div>
+                <div class="definition">${feature.definition}</div>
+                <div class="example">"${feature.example}"</div>
+                <div class="analysis-section">
+                    <div class="section-label">Effect</div>
+                    <div class="effect-text">${feature.effect}</div>
+                    <div class="analysis-questions">When Analysing Language, Ask</div>
+                    <ul class="questions-list">${questionsList}</ul>
+                </div>
+                <div class="purpose-section">
+                    <div class="section-label">When Exploring Why This Matters, You Can</div>
+                    <div class="purpose-item">
+                        <div class="purpose-heading">Connect to the Wider World:</div>
+                        <div class="purpose-text">${feature.purposes.connect}</div>
+                    </div>
+                    <div class="purpose-item">
+                        <div class="purpose-heading">Understand Ourselves:</div>
+                        <div class="purpose-text">${feature.purposes.understand}</div>
+                    </div>
+                    <div class="purpose-item">
+                        <div class="purpose-heading">Recognise the Craft:</div>
+                        <div class="purpose-text">${feature.purposes.recognise}</div>
+                    </div>
+                    <div class="purpose-item">
+                        <div class="purpose-heading">Question the Text:</div>
+                        <div class="purpose-text">${feature.purposes.question}</div>
+                    </div>
+                </div>
+            `;
+            modalOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            modalOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        modalClose.addEventListener('click', closeModal);
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) closeModal();
+        });
+
         function renderFlashcard() {
             const feature = features[currentCardIndex];
-            
-            const questionsList = feature.questions.map(q => `<li>${q}</li>`).join('');
-            
             document.getElementById('flashcardCategoryFront').textContent = feature.category;
             document.getElementById('flashcardCategory').textContent = feature.category;
             document.getElementById('flashcardName').textContent = feature.name;
@@ -1532,41 +1631,13 @@
             document.getElementById('flashcardAnalysis').innerHTML = `
                 <div class="section-label">Effect</div>
                 <div class="effect-text">${feature.effect}</div>
-                <div class="analysis-questions">When Analysing, Ask</div>
-                <ul class="questions-list">
-                    ${questionsList}
-                </ul>
             `;
-            document.getElementById('flashcardPurpose').innerHTML = `
-                <div class="section-label">Why This Matters</div>
-                <div class="purpose-item">
-                    <div class="purpose-heading">Connect to the Wider World:</div>
-                    <div class="purpose-text">${feature.purposes.connect}</div>
-                </div>
-                <div class="purpose-item">
-                    <div class="purpose-heading">Understand Ourselves:</div>
-                    <div class="purpose-text">${feature.purposes.understand}</div>
-                </div>
-                <div class="purpose-item">
-                    <div class="purpose-heading">Recognise the Craft:</div>
-                    <div class="purpose-text">${feature.purposes.recognise}</div>
-                </div>
-                <div class="purpose-item">
-                    <div class="purpose-heading">Question the Text:</div>
-                    <div class="purpose-text">${feature.purposes.question}</div>
-                </div>
-            `;
-            
             counter.textContent = `${currentCardIndex + 1} of ${features.length}`;
-            
             prevBtn.disabled = currentCardIndex === 0;
             nextBtn.disabled = currentCardIndex === features.length - 1;
         }
 
-        flashcard.addEventListener('click', () => {
-            flashcard.classList.toggle('flipped');
-        });
-
+        flashcard.addEventListener('click', () => flashcard.classList.toggle('flipped'));
         prevBtn.addEventListener('click', () => {
             if (currentCardIndex > 0) {
                 currentCardIndex--;
@@ -1583,8 +1654,10 @@
             }
         });
 
-        // Keyboard navigation in flashcard mode
         document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
+                closeModal();
+            }
             if (currentMode === 'flashcard') {
                 if (e.key === 'ArrowLeft') prevBtn.click();
                 if (e.key === 'ArrowRight') nextBtn.click();
@@ -1595,7 +1668,6 @@
             }
         });
 
-        // Add click handler for "All Features" button
         document.querySelector('[data-category="all"]').addEventListener('click', () => filterByCategory('all'));
     </script>
 </body>
