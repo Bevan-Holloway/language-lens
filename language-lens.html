@@ -4,6 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Language Lens</title>
+
+    <script>
+        const validCodes = new Set([
+            'DEMO2024',
+            'PC2025',
+            'OCT25!-TEMP'
+        ]);
+
+        const storedCode = localStorage.getItem('languageFeaturesAccess');
+
+        if (!validCodes.has(storedCode)) {
+            window.location.href = 'index.html';
+        }
+    </script>
+    
     <style>
         * {
             margin: 0;
