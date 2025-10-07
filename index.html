@@ -396,12 +396,10 @@
     <script>
         // Access code validation
         // ADD YOUR VALID CODES HERE
-        const validCodes = new Set([
-            'DEMO2024',
-            'PC2025',
-            'STUDENT456',
-            'OCT25!-TEMP'
-        ]);
+        // Obfuscated access codes
+        const encodedCodes = 'J0RFTU8yMDI0JywgJ1BDMjAyNScsICdPQ1QyNSEtVEVNUCcKICAgICAgICAgICAgCiAgICAgICAgICAgIA=='; // <-- PASTE YOUR ENCODED STRING HERE
+        const decodedCodes = JSON.parse(atob(encodedCodes));
+        const validCodes = new Set(decodedCodes);
 
         document.getElementById('submitBtn').addEventListener('click', checkAccessCode);
         document.getElementById('accessCode').addEventListener('keypress', (e) => {
