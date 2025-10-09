@@ -671,7 +671,7 @@
             <h1>Language Lens</h1>
             <p class="subtitle">A comprehensive guide to literary devices, grammar, and sentence structure for text analysis</p>
             
-            <div class="controls">
+            <div class="controls" id="mainControls">
                 <div class="search-box">
                     <span class="search-icon">🔍</span>
                     <input type="text" id="searchInput" placeholder="Search features...">
@@ -687,7 +687,7 @@
         <main>
             <section class="daily-quote-section" id="dailyQuoteSection">
                 <h2 class="collapsible-header" id="quoteHeader">
-                    <span>Today's Quote Analysis</span>
+                    <span>Daily Quote Analysis 💡</span>
                     <span class="toggle-icon">▼</span>
                 </h2>
                 <div class="collapsible-content" id="quoteContent">
@@ -847,8 +847,6 @@
                     question: "Does the sound reinforce stereotypes (evil snakes) or challenge them?"
                 }
             },
-
-            // IMAGERY & SENSORY
             {
                 name: "Imagery",
                 category: "Figurative Language",
@@ -885,8 +883,6 @@
                     question: "Does treating nature as human help us care for it, or does it centre human experience?"
                 }
             },
-
-            // COMPARISON
             {
                 name: "Metaphor",
                 category: "Figurative Language",
@@ -941,8 +937,6 @@
                     question: "Does the analogy oversimplify or does it genuinely illuminate the concept?"
                 }
             },
-
-            // STRUCTURE & FORM
             {
                 name: "Enjambment",
                 category: "Structural Devices",
@@ -1087,8 +1081,6 @@
                     question: "Could the understatement be misinterpreted by a reader unfamiliar with its cultural context?"
                 }
             },
-
-            // EMPHASIS & REPETITION
             {
                 name: "Anaphora",
                 category: "Structural Devices",
@@ -1143,8 +1135,6 @@
                     question: "Does the 'obvious' answer really allow for other perspectives?"
                 }
             },
-
-            // CONTRAST & IRONY
             {
                 name: "Antithesis",
                 category: "Figurative Language",
@@ -1198,7 +1188,7 @@
                     recognise: "How does the writer use contradiction to create humour or criticism?",
                     question: "Who benefits and who suffers from the ironic situation?"
                 }
-            },
+},
             {
                 name: "Oxymoron",
                 category: "Figurative Language",
@@ -1217,8 +1207,6 @@
                     question: "Does the contradiction reveal truth or confusion in our language?"
                 }
             },
-
-            // SYMBOLISM & REFERENCE
             {
                 name: "Symbolism",
                 category: "Figurative Language",
@@ -1273,8 +1261,6 @@
                     question: "Does foreshadowing suggest fate and inevitability, or just careful planning?"
                 }
             },
-
-            // WORD CHOICE
             {
                 name: "Adjectives",
                 category: "Parts of Speech",
@@ -1603,6 +1589,79 @@
                     question: "Whose emotional expressions are considered appropriate or excessive?"
                 }
             }
+            // PUNCTUATION & SYNTAX
+            {
+                name: "Asyndeton",
+                category: "Punctuation & Syntax",
+                definition: "The omission or absence of conjunctions (like 'and', 'or', 'but') between parts of a sentence.",
+                example: "I came, I saw, I conquered.",
+                effect: "Creates a fast-paced, breathless rhythm. It can make a list feel more immediate, spontaneous, or overwhelming.",
+                questions: [
+                    "What is the effect of removing the 'and's from the list?",
+                    "How does the pace of the sentence change?",
+                    "Does this make the speaker sound more powerful, rushed, or passionate?"
+                ],
+                purposes: {
+                    connect: "How is asyndeton used in powerful speeches or dramatic moments in film to create a sense of urgency?",
+                    understand: "How does the rapid-fire list make you feel as a reader? Overwhelmed? Energised?",
+                    recognise: "The writer is deliberately breaking a grammatical rule to manipulate rhythm for emotional effect.",
+                    question: "Does the rapid pace prevent you from thinking too deeply about any single item in the list?"
+                }
+            },
+            {
+                name: "Polysyndeton",
+                category: "Punctuation & Syntax",
+                definition: "The deliberate use of multiple conjunctions in close succession, especially where they are not strictly necessary.",
+                example: "We have ships and men and money and stores.",
+                effect: "Slows down the rhythm of a sentence, creating a sense of deliberate emphasis, abundance, or even childlike excitement.",
+                questions: [
+                    "What is the effect of adding extra 'and's to the list?",
+                    "How does this change the feeling compared to a standard list?",
+                    "Does it make the list feel larger, more significant, or more exhausting?"
+                ],
+                purposes: {
+                    connect: "How is this technique used in religious texts (like the Bible) or children's stories to create a sense of scale and wonder?",
+                    understand: "Does the repetitive nature of the list feel comforting and rhythmic, or tedious and overwhelming?",
+                    recognise: "The writer is using grammar to control the pace of reading, forcing you to consider each item in the list individually.",
+                    question: "Does the deliberate slowing of the pace suggest the speaker is trying to be persuasive or simply being dramatic?"
+                }
+            },
+            {
+                name: "Ellipsis",
+                category: "Punctuation & Syntax",
+                definition: "The use of three dots (...) to indicate an omission of words, a pause, or an unfinished thought.",
+                example: "She looked out at the rain and whispered, 'If only...'",
+                effect: "Creates suspense, indicates hesitation, or allows the reader to fill in the blank with their own imagination. It suggests something left unsaid.",
+                questions: [
+                    "What is being left unsaid or trailed off?",
+                    "What emotion does this pause or omission create (suspense, sadness, uncertainty)?",
+                    "Why did the writer choose not to complete the thought?"
+                ],
+                purposes: {
+                    connect: "How do we use pauses and unfinished sentences in our own speech to convey emotion or uncertainty?",
+                    understand: "How does the ellipsis make you, the reader, an active participant by forcing you to imagine what's missing?",
+                    recognise: "The writer is using punctuation to create atmosphere and engage the reader's imagination beyond the words on the page.",
+                    question: "Is the missing information a deliberate mystery, or does it signal a character's inability to express themselves?"
+                }
+            },
+            {
+                name: "Em Dash",
+                category: "Punctuation & Syntax",
+                definition: "A punctuation mark (—) used to signal an interruption, an abrupt change of thought, or to add dramatic emphasis to a phrase.",
+                example: "She was a brilliant scientist—and a terrible cook.",
+                effect: "Creates a more dramatic and informal pause than a comma or colon. It can make the text feel more like natural speech, with interruptions and parenthetical thoughts.",
+                questions: [
+                    "What is the purpose of the interruption here?",
+                    "How does the dash change the tone compared to using a different punctuation mark?",
+                    "Does the phrase after the dash add emphasis, an explanation, or a surprising twist?"
+                ],
+                purposes: {
+                    connect: "How do em dashes mimic the way we interrupt ourselves in natural conversation to add extra information or change direction?",
+                    understand: "Does the abrupt pause create a sense of drama, comedy, or intimacy for you as a reader?",
+                    recognise: "The writer is choosing a specific punctuation mark to create a distinct voice and rhythm that feels less formal and more dynamic.",
+                    question: "Is the information set off by dashes a crucial detail or a casual aside? How does that choice affect its importance?"
+                }
+            }
         ];
 
         const dailyQuotes = [
@@ -1657,6 +1716,7 @@
         const nextBtn = document.getElementById('nextBtn');
         const counter = document.getElementById('counter');
         const filterControls = document.getElementById('filterControls');
+        const mainControls = document.getElementById('mainControls');
         const modalOverlay = document.getElementById('modalOverlay');
         const modalClose = document.getElementById('modalClose');
         const modalBody = document.getElementById('modalBody');
@@ -1764,15 +1824,13 @@
                 gallery.classList.add('hidden');
                 noResults.classList.add('hidden');
                 flashcardContainer.classList.add('active');
-                modeToggle.textContent = 'Switch to Reference Mode';
-                searchInput.disabled = true;
+                mainControls.style.display = 'none'; // Hide search and toggle
                 filterControls.style.display = 'none';
-                renderFlashcard();
+                modeToggle.textContent = 'Switch to Reference Mode'; // This button is hidden, but good practice
             } else {
                 currentMode = 'gallery';
                 flashcardContainer.classList.remove('active');
-                modeToggle.textContent = 'Switch to Flashcard Mode';
-                searchInput.disabled = false;
+                mainControls.style.display = 'flex'; // Show search and toggle
                 filterControls.style.display = 'flex';
                 flashcard.classList.remove('flipped');
                 searchInput.value = '';
@@ -1807,7 +1865,7 @@
                         </button>
                     </div>
                     <div class="definition">${feature.definition}</div>
-                    <div class="example">"${feature.example}"</div>
+                    <div class="example">${feature.example}</div>
                     <div class="analysis-section">
                         <div class="section-label">Effect</div>
                         <div class="effect-text">${feature.effect}</div>
@@ -1869,7 +1927,7 @@
                 <div class="category-tag">${feature.category}</div>
                 <div class="feature-name"><span>${feature.name}</span></div>
                 <div class="definition">${feature.definition}</div>
-                <div class="example">"${feature.example}"</div>
+                <div class="example">${feature.example}</div>
                 <div class="analysis-section">
                     <div class="section-label">Effect</div>
                     <div class="effect-text">${feature.effect}</div>
@@ -1917,7 +1975,7 @@
             document.getElementById('flashcardName').textContent = feature.name;
             document.getElementById('flashcardNameBack').textContent = feature.name;
             document.getElementById('flashcardDefinition').textContent = feature.definition;
-            document.getElementById('flashcardExample').textContent = `"${feature.example}"`;
+            document.getElementById('flashcardExample').textContent = `${feature.example}`;
             document.getElementById('flashcardAnalysis').innerHTML = `
                 <div class="section-label">Effect</div>
                 <div class="effect-text">${feature.effect}</div>
