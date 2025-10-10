@@ -690,10 +690,24 @@
                 border: 1px solid #e2e8f0;
                 margin-bottom: 1rem;
             }
+            .premium-feature {
+                background: #f1f5f9;
+                color: #64748b;
+                border: 1.5px solid #e2e8f0;
+                cursor: pointer;
+            }
+            .premium-feature:hover {
+                background: #e2e8f0;
+                transform: translateY(-1px);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            }
+            .is-sample .bookmark-btn {
+                display: none;
+            }
         }
     </style>
 </head>
-<body>
+<body class="is-sample">
     <div class="container">
         <header>
             <h1>Language Lens</h1>
@@ -704,7 +718,7 @@
                     <span class="search-icon">🔍</span>
                     <input type="text" id="searchInput" placeholder="Search features...">
                 </div>
-                <button class="mode-toggle" id="modeToggle">Switch to Flashcard Mode</button>
+                <a href="purchase.html" class="mode-toggle premium-feature">⚡ Flashcard Mode (Full Version)</a>
             </div>
             
             <div class="filter-controls" id="filterControls" style="margin-top: 1.5rem;">
@@ -916,7 +930,6 @@
                 }
             },   
         ];
-
         const dailyQuotes = [
             {
                 text: "The mass of men lead lives of quiet desperation.",
