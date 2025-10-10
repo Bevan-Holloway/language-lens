@@ -3,22 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Language Lens</title>
-
-    <script>
-        const validCodes = new Set([
-            'DEMO2024',
-            'PC2025',
-            'O$2TE@7B',
-            'TRYME'
-        ]);
-
-        const storedCode = localStorage.getItem('languageFeaturesAccess');
-
-        if (!validCodes.has(storedCode)) {
-            window.location.href = 'index.html';
-        }
-    </script>
+    <title>Language Lens (Sample)</title>
     
     <style>
         * {
@@ -62,6 +47,25 @@
             margin-bottom: 2rem;
             font-weight: 400;
         }
+
+        .upgrade-prompt {
+            background: #fffbf5; 
+            border: 1px solid #fde8cc; 
+            padding: 1rem; 
+            border-radius: 0.5rem; 
+            text-align: center;
+            margin-top: -1rem;
+            margin-bottom: 2rem;
+        }
+        .upgrade-prompt p {
+            margin:0; 
+            font-size: 0.95rem;
+        }
+        .upgrade-prompt a {
+            color: #1e3a5f;
+            font-weight: 600;
+        }
+
 
         .controls {
             display: flex;
@@ -142,12 +146,20 @@
             font-weight: 500;
             transition: all 0.2s;
             white-space: nowrap;
+            text-decoration: none;
         }
 
-        .mode-toggle:hover {
-            background: #2c4a6f;
+        .mode-toggle.premium-feature {
+            background: #f1f5f9;
+            color: #64748b;
+            border: 1.5px solid #e2e8f0;
+            cursor: pointer;
+        }
+        .mode-toggle.premium-feature:hover {
+            background: #e2e8f0;
+            color: #1e3a5f;
             transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(30, 58, 95, 0.2);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
 
         /* Daily Quote Section - Collapsible */
@@ -242,7 +254,6 @@
             color: #1e3a5f;
         }
 
-        /* Analysis Section (for explanation) - Match card's effect section */
         .analysis-section {
             background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
             padding: 1.25rem 1.5rem;
@@ -270,7 +281,6 @@
             margin-bottom: 0;
         }
 
-        /* Purpose Section (for why it matters) - Match card's purpose section */
         .purpose-section {
             background: linear-gradient(135deg, #fffbf5, #fef5e7);
             padding: 1.25rem 1.5rem;
@@ -285,14 +295,6 @@
             font-style: italic;
         }
 
-        .purpose-item {
-            margin-bottom: 0.875rem;
-        }
-        .purpose-item:last-child {
-            margin-bottom: 0;
-        }
-
-        /* Reference Gallery Mode */
         .gallery {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
@@ -322,6 +324,10 @@
             align-items: center;
             justify-content: space-between;
             letter-spacing: -0.01em;
+        }
+        
+        .is-sample .bookmark-btn {
+            display: none;
         }
 
         .bookmark-btn {
@@ -403,30 +409,7 @@
             color: #0c4a6e;
             font-weight: bold;
         }
-
-        .purpose-section .questions-list li::before {
-            color: #6b21a8;
-        }
-
-        .questions-list li:last-child {
-            margin-bottom: 0;
-        }
-
-        .purpose-item .purpose-heading {
-            color: #7c3aed;
-            font-weight: 600;
-            font-size: 0.875rem;
-            margin-bottom: 0.25rem;
-        }
-
-        .purpose-item .purpose-text {
-            color: #334155;
-            font-size: 0.9rem;
-            line-height: 1.5;
-            font-style: italic;
-        }
-
-        /* Modal Overlay */
+        
         .modal-overlay {
             display: none;
             position: fixed;
@@ -488,113 +471,6 @@
             transform: scale(1.1);
         }
 
-        /* Flashcard Mode */
-        .flashcard-container {
-            display: none;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        .flashcard-container.active {
-            display: block;
-        }
-
-        .flashcard {
-            background: white;
-            border-radius: 0.5rem;
-            padding: 3.5rem 3rem;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-            min-height: 500px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .flashcard:hover {
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-        }
-
-        .flashcard-front {
-            text-align: center;
-        }
-
-        .flashcard-front .feature-name {
-            font-size: 2.75rem;
-            color: #1e3a5f;
-            justify-content: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .flashcard-front .tap-hint {
-            color: #94a3b8;
-            font-size: 0.95rem;
-            margin-top: 2.5rem;
-        }
-
-        .flashcard-back {
-            display: none;
-        }
-
-        .flashcard.flipped .flashcard-front {
-            display: none;
-        }
-
-        .flashcard.flipped .flashcard-back {
-            display: block;
-        }
-
-        .flashcard-navigation {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 2rem;
-        }
-        
-        .flashcard-nav-center {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-        }
-
-        .nav-btn {
-            background: #1e3a5f;
-            color: white;
-            border: none;
-            padding: 0.875rem 1.75rem;
-            border-radius: 0.375rem;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 500;
-            transition: all 0.2s;
-        }
-        
-        #randomiseBtn {
-            background-color: #f1f5f9;
-            color: #475569;
-            padding: 0.75rem 1.25rem;
-            font-size: 0.9rem;
-        }
-        
-        #randomiseBtn:hover {
-             background-color: #e2e8f0;
-             transform: translateY(-1px);
-        }
-
-        .nav-btn:hover:not(:disabled) {
-            background: #2c4a6f;
-            transform: translateY(-1px);
-        }
-
-        .nav-btn:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
-        }
-
-        .card-counter {
-            color: #475569;
-            font-weight: 600;
-            font-size: 1.1rem;
-        }
-
         .hidden {
             display: none !important;
         }
@@ -610,101 +486,6 @@
             margin-bottom: 2.5rem;
         }
 
-        @media (max-width: 768px) {
-            body {
-                padding: 1rem;
-            }
-
-            header {
-                padding: 1.5rem;
-            }
-
-            h1 {
-                font-size: 1.75rem;
-            }
-
-            .daily-quote-section {
-                padding: 1rem 1.5rem;
-            }
-             .collapsible-header span:first-child {
-                font-size: 1.25rem;
-            }
-            .daily-quote-section blockquote {
-                font-size: 1.1rem;
-            }
-
-            .gallery {
-                grid-template-columns: 1fr;
-                gap: 1.5rem;
-            }
-
-            .feature-card {
-                padding: 1.5rem;
-            }
-
-            .flashcard {
-                padding: 2rem 1.5rem;
-            }
-            .flashcard-navigation {
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 1rem;
-            }
-            .flashcard-nav-center {
-                order: -1;
-                width: 100%;
-                justify-content: center;
-            }
-
-            .flashcard-front .feature-name {
-                font-size: 2rem;
-            }
-
-            .modal-overlay {
-                padding: 1rem;
-            }
-
-            .modal-inner {
-                padding: 1.5rem;
-            }
-
-            .modal-content {
-                width: 95%;
-                max-height: 85vh;
-            }
-        }
-
-        @media print {
-            body {
-                background: white;
-            }
-
-            .controls, .mode-toggle, .bookmark-btn, .filter-controls, .daily-quote-section {
-                display: none !important;
-            }
-
-            .feature-card {
-                break-inside: avoid;
-                page-break-inside: avoid;
-                box-shadow: none;
-                border: 1px solid #e2e8f0;
-                margin-bottom: 1rem;
-            }
-            .premium-feature {
-                background: #f1f5f9;
-                color: #64748b;
-                border: 1.5px solid #e2e8f0;
-                cursor: pointer;
-            }
-            .premium-feature:hover {
-                background: #e2e8f0;
-                transform: translateY(-1px);
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            }
-            .is-sample .bookmark-btn {
-                display: none;
-            }
-        }
     </style>
 </head>
 <body class="is-sample">
@@ -713,6 +494,12 @@
             <h1>Language Lens</h1>
             <p class="subtitle">A comprehensive guide to literary devices, grammar, and sentence structure for text analysis</p>
             
+            <div class="upgrade-prompt">
+                <p>
+                    This is a free sample with 8 features. <strong><a href="purchase.html">Purchase now</a></strong> to unlock all 48+ features, including the full flashcard deck and bookmarking.
+                </p>
+            </div>
+
             <div class="controls">
                 <div class="search-box" id="searchBox">
                     <span class="search-icon">🔍</span>
@@ -723,7 +510,6 @@
             
             <div class="filter-controls" id="filterControls" style="margin-top: 1.5rem;">
                 <button class="category-filter active" data-category="all">All Features</button>
-                <button class="category-filter" id="bookmarkFilterBtn">🔖 Show Bookmarked</button>
             </div>
         </header>
 
@@ -744,33 +530,8 @@
 
             <div class="gallery" id="gallery"></div>
             <div class="no-results hidden" id="noResults">No features found matching your search or filter.</div>
-
-            <div class="flashcard-container" id="flashcardContainer">
-                <div class="flashcard" id="flashcard">
-                    <div class="flashcard-front">
-                        <div class="category-tag" id="flashcardCategoryFront"></div>
-                        <div class="feature-name" id="flashcardName"></div>
-                        <p class="tap-hint">Click to reveal details ▼</p>
-                    </div>
-                    <div class="flashcard-back">
-                        <div class="category-tag" id="flashcardCategory"></div>
-                        <div class="feature-name" id="flashcardNameBack"></div>
-                        <div class="definition" id="flashcardDefinition"></div>
-                        <div class="example" id="flashcardExample"></div>
-                        <div class="analysis-section" id="flashcardAnalysis"></div>
-                    </div>
-                </div>
-                
-                <div class="flashcard-navigation">
-                    <button class="nav-btn" id="prevBtn">← Previous</button>
-                    <div class="flashcard-nav-center">
-                        <div class="card-counter" id="counter"></div>
-                        <button class="nav-btn" id="randomiseBtn">🔀 Randomise</button>
-                    </div>
-                    <button class="nav-btn" id="nextBtn">Next →</button>
-                </div>
-            </div>
-        </main>
+            
+            </main>
     </div>
 
     <div class="modal-overlay" id="modalOverlay">
@@ -783,26 +544,8 @@
     </div>
 
     <script>
+        // Feature list shortened for sample version
         const features = [
-            // SOUND DEVICES
-            {
-                name: "Adjectives",
-                category: "Parts of Speech",
-                definition: "Descriptive words that modify nouns, providing specific details about their qualities, characteristics, or states.",
-                example: "The <strong>ancient</strong>, <strong>weathered</strong> manuscript revealed secrets.",
-                effect: "Add precision, create vivid imagery, and shape the reader's perception of people, places, or things.",
-                questions: [
-                    "What specific qualities do the adjectives emphasise?",
-                    "How do they influence your impression of the subject?",
-                    "Why did the writer choose these particular descriptors?"
-                ],
-                purposes: {
-                    connect: "How do descriptive words shape cultural perceptions and stereotypes?",
-                    understand: "What emotions or judgments do these descriptive words trigger in you?",
-                    recognise: "How does the writer use selection of adjectives to guide your feelings?",
-                    question: "What biases or assumptions do these descriptive choices reveal?"
-                }
-            },
             {
                 name: "Alliteration",
                 category: "Sound Devices",
@@ -819,24 +562,6 @@
                     understand: "What emotion or memory does this sound evoke in you as a reader?",
                     recognise: "How does the writer use sound to make certain words stand out or stick in your mind?",
                     question: "Does the pleasant or harsh sound influence how you feel about what's being described?"
-                }
-            },
-            {
-                name: "Foreshadowing",
-                category: "Structural Devices",
-                definition: "Hints or clues about events that will occur later in the narrative.",
-                example: "There are dark clouds gathering on the horizon.",
-                effect: "Builds anticipation, creates tension, and prepares readers for future events.",
-                questions: [
-                    "What is being hinted at or suggested?",
-                    "How does this create expectations about what might happen?",
-                    "Why did the writer want to prepare us for what's coming?"
-                ],
-                purposes: {
-                    connect: "How does foreshadowing connect to storytelling traditions and prophecy?",
-                    understand: "How does anticipating future events change your experience of the present?",
-                    recognise: "How does the writer plant clues to create suspense and structure?",
-                    question: "Does foreshadowing suggest fate and inevitability, or just careful planning?"
                 }
             },
             {
@@ -866,31 +591,13 @@
                 questions: [
                     "What non-human thing is being given human qualities?",
                     "What human characteristics are assigned to it?",
-                    "Why does the writer want us to see this thing as human-like?"
+                    "Why did the writer want us to see this thing as human-like?"
                 ],
                 purposes: {
                     connect: "How does this connect to myths, fables, or cultural stories about nature?",
                     understand: "How does seeing nature as alive change your relationship with it?",
                     recognise: "How does the writer make abstract or distant things feel closer and more relatable?",
                     question: "Does treating nature as human help us care for it, or does it centre human experience?"
-                }
-            },
-            {
-                name: "Repetition",
-                category: "Structural Devices",
-                definition: "The simple act of repeating a word, phrase, or sentence.",
-                example: "The politician promised change, change, and more change.",
-                effect: "Emphasises key ideas and creates rhythm, building intensity or urgency.",
-                questions: [
-                    "What specific words or phrases are being repeated?",
-                    "How does the repetition affect the tone or emotional intensity?",
-                    "Why does the writer want to hammer this point home?"
-                ],
-                purposes: {
-                    connect: "How does repetition connect to advertising, political slogans, or cultural mantras?",
-                    understand: "Does the repetition convince you or make you suspicious?",
-                    recognise: "How does the writer use repetition to persuade or manipulate?",
-                    question: "Is the repetition used to inspire or to overwhelm critical thinking?"
                 }
             },
             {
@@ -912,6 +619,60 @@
                 }
             },
             {
+                name: "Repetition",
+                category: "Structural Devices",
+                definition: "The simple act of repeating a word, phrase, or sentence.",
+                example: "The politician promised change, change, and more change.",
+                effect: "Emphasises key ideas and creates rhythm, building intensity or urgency.",
+                questions: [
+                    "What specific words or phrases are being repeated?",
+                    "How does the repetition affect the tone or emotional intensity?",
+                    "Why does the writer want to hammer this point home?"
+                ],
+                purposes: {
+                    connect: "How does repetition connect to advertising, political slogans, or cultural mantras?",
+                    understand: "Does the repetition convince you or make you suspicious?",
+                    recognise: "How does the writer use repetition to persuade or manipulate?",
+                    question: "Is the repetition used to inspire or to overwhelm critical thinking?"
+                }
+            },
+            {
+                name: "Foreshadowing",
+                category: "Structural Devices",
+                definition: "Hints or clues about events that will occur later in the narrative.",
+                example: "There are dark clouds gathering on the horizon.",
+                effect: "Builds anticipation, creates tension, and prepares readers for future events.",
+                questions: [
+                    "What is being hinted at or suggested?",
+                    "How does this create expectations about what might happen?",
+                    "Why does the writer want to prepare us for what's coming?"
+                ],
+                purposes: {
+                    connect: "How does foreshadowing connect to storytelling traditions and prophecy?",
+                    understand: "How does anticipating future events change your experience of the present?",
+                    recognise: "How does the writer plant clues to create suspense and structure?",
+                    question: "Does foreshadowing suggest fate and inevitability, or just careful planning?"
+                }
+            },
+            {
+                name: "Adjectives",
+                category: "Parts of Speech",
+                definition: "Descriptive words that modify nouns, providing specific details about their qualities, characteristics, or states.",
+                example: "The <strong>ancient</strong>, <strong>weathered</strong> manuscript revealed secrets.",
+                effect: "Add precision, create vivid imagery, and shape the reader's perception of people, places, or things.",
+                questions: [
+                    "What specific qualities do the adjectives emphasise?",
+                    "How do they influence your impression of the subject?",
+                    "Why did the writer choose these particular descriptors?"
+                ],
+                purposes: {
+                    connect: "How do descriptive words shape cultural perceptions and stereotypes?",
+                    understand: "What emotions or judgments do these descriptive words trigger in you?",
+                    recognise: "How does the writer use selection of adjectives to guide your feelings?",
+                    question: "What biases or assumptions do these descriptive choices reveal?"
+                }
+            },
+            {
                 name: "Simple Sentence",
                 category: "Sentences",
                 definition: "A sentence with one independent clause containing a subject and verb, expressing a complete thought.",
@@ -928,8 +689,9 @@
                     recognise: "How does the writer use simple sentences for emphasis or pacing?",
                     question: "Does simplicity clarify or does it hide complexity?"
                 }
-            },   
+            }
         ];
+
         const dailyQuotes = [
             {
                 text: "The mass of men lead lives of quiet desperation.",
@@ -946,69 +708,26 @@
                 techniques: ["Anaphora", "Antithesis", "Parallel Structure"],
                 analysis: "Dickens employs <strong>anaphora</strong> by repeating the phrase 'it was the' to build a powerful, rhythmic cadence. This repetition structures a series of direct contrasts, or <strong>antithesis</strong> ('best'/'worst', 'wisdom'/'foolishness'). The use of <strong>parallel structure</strong> across these clauses gives the contradictions a sense of epic scale and balance.",
                 matters: "This opening immediately establishes the novel's central theme of duality. Rather than presenting a simple view of the past, the language forces the reader to hold opposing ideas in their mind simultaneously. This complexity suggests that truth is not simple and that every era is defined by its contradictions, setting the stage for a story where personal and political loyalties are constantly in conflict."
-            },
-            {
-                text: "Because I could not stop for Death – He kindly stopped for me –",
-                author: "Emily Dickinson",
-                source: "Poem 712 (c. 1863)",
-                techniques: ["Personification", "Irony", "Caesura"],
-                analysis: "Dickinson uses <strong>personification</strong> to portray Death as a polite gentleman in a carriage. This gentle image is contrasted with the reality of death, creating a profound <strong>irony</strong>. The <strong>caesura</strong> (the dash) creates a pause, forcing the reader to contemplate this strange, courteous image of mortality before the line concludes.",
-                matters: "By transforming death from a terrifying force into a gentle suitor, the poem challenges our fundamental fears. The analysis shows how this gentle tone creates a contemplative mood, allowing the speaker to explore the journey towards the afterlife without fear. It reframes mortality not as an end, but as a transition, prompting a deeper reflection on the nature of eternity and our place within it."
-            },
-            {
-                text: "All the world's a stage, And all the men and women merely players;",
-                author: "William Shakespeare",
-                source: "As You Like It (c. 1599)",
-                techniques: ["Metaphor", "Parallel Structure"],
-                analysis: "Shakespeare uses a direct <strong>metaphor</strong> to frame life as a theatrical performance, stating the world <strong>is</strong> a stage. This comparison is extended through <strong>parallel structure</strong> in the two lines ('All the...'), creating a balanced, memorable rhythm that gives the idea a sense of universal truth.",
-                matters: "This metaphor provides a powerful framework for understanding human existence. It suggests our lives follow a pre-written script with set roles, entrances, and exits. This perspective can feel fatalistic, but it also connects every individual's personal story to a larger, shared human drama, highlighting the common experiences that unite us across time."
-            },
+            }
         ];
 
         const categories = ['all', ...new Set(features.map(f => f.category))];
-        let currentMode = 'gallery';
-        let currentCardIndex = 0;
         let currentCategory = 'all';
-        let showingBookmarksOnly = false;
         let filteredFeatures = [...features];
-        let bookmarks = JSON.parse(localStorage.getItem('languageFeatureBookmarks') || '[]');
-        let flashcardOrder = [];
 
         const gallery = document.getElementById('gallery');
-        const flashcardContainer = document.getElementById('flashcardContainer');
-        const modeToggle = document.getElementById('modeToggle');
         const searchInput = document.getElementById('searchInput');
-        const searchBox = document.getElementById('searchBox');
         const noResults = document.getElementById('noResults');
-        const flashcard = document.getElementById('flashcard');
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
-        const counter = document.getElementById('counter');
-        const randomiseBtn = document.getElementById('randomiseBtn');
         const filterControls = document.getElementById('filterControls');
-        const bookmarkFilterBtn = document.getElementById('bookmarkFilterBtn');
         const modalOverlay = document.getElementById('modalOverlay');
         const modalClose = document.getElementById('modalClose');
         const modalBody = document.getElementById('modalBody');
         
-        // Quote Section Elements
         const quoteSection = document.getElementById('dailyQuoteSection');
         const quoteHeader = document.getElementById('quoteHeader');
         const dailyQuoteText = document.getElementById('dailyQuoteText');
         const dailyQuoteSource = document.getElementById('dailyQuoteSource');
         const dailyQuoteAnalysis = document.getElementById('dailyQuoteAnalysis');
-
-        function shuffleArray(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-        }
-
-        function initializeFlashcards() {
-            flashcardOrder = Array.from(features.keys());
-            currentCardIndex = 0;
-        }
 
         function displayDailyQuote() {
             function getDayOfYear() {
@@ -1050,9 +769,6 @@
             const tag = e.target.closest('.technique-tag-link');
             if (tag) {
                 const featureName = tag.dataset.feature;
-                if (currentMode === 'flashcard') {
-                    modeToggle.click();
-                }
                 searchInput.value = featureName;
                 filterByCategory('all');
                 applyFilters();
@@ -1074,26 +790,7 @@
         displayDailyQuote();
         renderGallery();
 
-        bookmarkFilterBtn.addEventListener('click', () => {
-            showingBookmarksOnly = !showingBookmarksOnly;
-            
-            bookmarkFilterBtn.classList.toggle('active', showingBookmarksOnly);
-            if (showingBookmarksOnly) {
-                document.querySelectorAll('.category-filter[data-category]').forEach(btn => {
-                    btn.classList.remove('active');
-                });
-            } else {
-                document.querySelector('[data-category="all"]').classList.add('active');
-                currentCategory = 'all';
-            }
-            
-            applyFilters();
-        });
-
         function filterByCategory(category) {
-            showingBookmarksOnly = false;
-            bookmarkFilterBtn.classList.remove('active');
-            
             currentCategory = category;
             document.querySelectorAll('.category-filter').forEach(btn => {
                 btn.classList.remove('active');
@@ -1105,46 +802,17 @@
         function applyFilters() {
             const searchTerm = searchInput.value.toLowerCase();
             filteredFeatures = features.filter(f => {
-                const isBookmarked = bookmarks.includes(f.name);
+                const matchesCategory = currentCategory === 'all' || f.category === currentCategory;
                 const matchesSearch = !searchTerm || 
                     f.name.toLowerCase().includes(searchTerm) ||
                     f.definition.toLowerCase().includes(searchTerm) ||
                     f.effect.toLowerCase().includes(searchTerm) ||
                     f.category.toLowerCase().includes(searchTerm);
-
-                if (showingBookmarksOnly) {
-                    return isBookmarked && matchesSearch;
-                } else {
-                    const matchesCategory = currentCategory === 'all' || f.category === currentCategory;
-                    return matchesCategory && matchesSearch;
-                }
+                return matchesCategory && matchesSearch;
             });
             renderGallery();
         }
-
-        modeToggle.addEventListener('click', () => {
-            if (currentMode === 'gallery') {
-                currentMode = 'flashcard';
-                gallery.classList.add('hidden');
-                noResults.classList.add('hidden');
-                flashcardContainer.classList.add('active');
-                searchBox.style.display = 'none';
-                filterControls.style.display = 'none';
-                modeToggle.textContent = 'Switch to Reference Mode';
-                initializeFlashcards();
-                renderFlashcard();
-            } else {
-                currentMode = 'gallery';
-                flashcardContainer.classList.remove('active');
-                searchBox.style.display = '';
-                filterControls.style.display = 'flex';
-                modeToggle.textContent = 'Switch to Flashcard Mode';
-                flashcard.classList.remove('flipped');
-                searchInput.value = '';
-                applyFilters();
-            }
-        });
-
+        
         searchInput.addEventListener('input', applyFilters);
 
         function renderGallery() {
@@ -1160,17 +828,13 @@
             filteredFeatures.forEach((feature) => {
                 const card = document.createElement('div');
                 card.className = 'feature-card';
-                const isBookmarked = bookmarks.includes(feature.name);
                 const questionsList = feature.questions.map(q => `<li>${q}</li>`).join('');
                 
                 card.innerHTML = `
                     <div class="category-tag">${feature.category}</div>
                     <div class="feature-name">
                         <span>${feature.name}</span>
-                        <button class="bookmark-btn ${isBookmarked ? 'active' : ''}" data-name="${feature.name}">
-                            ${isBookmarked ? '★' : '☆'}
-                        </button>
-                    </div>
+                        </div>
                     <div class="definition">${feature.definition}</div>
                     <div class="example">${feature.example}</div>
                     <div class="analysis-section">
@@ -1201,31 +865,11 @@
                 `;
                 
                 card.addEventListener('click', (e) => {
-                    if (!e.target.closest('.bookmark-btn')) {
-                        openModal(feature);
-                    }
+                    openModal(feature);
                 });
                 
                 gallery.appendChild(card);
             });
-
-            document.querySelectorAll('.bookmark-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    toggleBookmark(btn.dataset.name);
-                });
-            });
-        }
-
-        function toggleBookmark(name) {
-            const index = bookmarks.indexOf(name);
-            if (index > -1) {
-                bookmarks.splice(index, 1);
-            } else {
-                bookmarks.push(name);
-            }
-            localStorage.setItem('languageFeatureBookmarks', JSON.stringify(bookmarks));
-            renderGallery();
         }
 
         function openModal(feature) {
@@ -1275,61 +919,9 @@
             if (e.target === modalOverlay) closeModal();
         });
 
-        function renderFlashcard() {
-            const featureIndex = flashcardOrder[currentCardIndex];
-            const feature = features[featureIndex];
-
-            document.getElementById('flashcardCategoryFront').textContent = feature.category;
-            document.getElementById('flashcardCategory').textContent = feature.category;
-            document.getElementById('flashcardName').textContent = feature.name;
-            document.getElementById('flashcardNameBack').textContent = feature.name;
-            document.getElementById('flashcardDefinition').textContent = feature.definition;
-            document.getElementById('flashcardExample').innerHTML = `${feature.example}`;
-            document.getElementById('flashcardAnalysis').innerHTML = `
-                <div class="section-label">Effect</div>
-                <div class="effect-text">${feature.effect}</div>
-            `;
-            counter.textContent = `${currentCardIndex + 1} of ${flashcardOrder.length}`;
-            prevBtn.disabled = currentCardIndex === 0;
-            nextBtn.disabled = currentCardIndex === flashcardOrder.length - 1;
-        }
-
-        flashcard.addEventListener('click', () => flashcard.classList.toggle('flipped'));
-        
-        prevBtn.addEventListener('click', () => {
-            if (currentCardIndex > 0) {
-                currentCardIndex--;
-                flashcard.classList.remove('flipped');
-                renderFlashcard();
-            }
-        });
-
-        nextBtn.addEventListener('click', () => {
-            if (currentCardIndex < flashcardOrder.length - 1) {
-                currentCardIndex++;
-                flashcard.classList.remove('flipped');
-                renderFlashcard();
-            }
-        });
-
-        randomiseBtn.addEventListener('click', () => {
-            shuffleArray(flashcardOrder);
-            currentCardIndex = 0;
-            flashcard.classList.remove('flipped');
-            renderFlashcard();
-        });
-
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
                 closeModal();
-            }
-            if (currentMode === 'flashcard') {
-                if (e.key === 'ArrowLeft') prevBtn.click();
-                if (e.key === 'ArrowRight') nextBtn.click();
-                if (e.key === ' ' || e.key === 'Enter') {
-                    e.preventDefault();
-                    flashcard.classList.toggle('flipped');
-                }
             }
         });
 
