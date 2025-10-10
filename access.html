@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Access Language Lens | Learner Threads</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
+            min-height: 100vh;
+            padding: 2rem;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            max-width: 700px;
+            width: 100%;
+        }
+        .hero {
+            background: white;
+            padding: 3rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            text-align: center;
+        }
+        h1 {
+            color: #1e3a5f;
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+        .subtitle {
+            color: #64748b;
+            font-size: 1.15rem;
+            margin-bottom: 2.5rem;
+            line-height: 1.6;
+        }
+        .access-form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 0.875rem 1.25rem;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: all 0.2s;
+            background: #f8fafc;
+        }
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #1e3a5f;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(30, 58, 95, 0.1);
+        }
+        .submit-btn {
+            width: 100%;
+            background: #1e3a5f;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 0.5rem;
+            font-size: 1.05rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .submit-btn:hover {
+            background: #2c4a6f;
+            transform: translateY(-1px);
+        }
+        .error-message {
+            color: #dc2626;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+        .error-message.show {
+            display: block;
+        }
+        .support-links {
+            margin-top: 2rem;
+            font-size: 0.9rem;
+        }
+        .support-links a {
+            color: #475569;
+            text-decoration: none;
+            margin: 0 0.75rem;
+        }
+        .support-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="hero">
+            <h1>Language Lens</h1>
+            <p class="subtitle">Enter your access code to begin.</p>
+            
+            <div class="access-form">
+                <div class="input-group">
+                    <input type="text" id="accessCode" placeholder="Enter code here" autocomplete="off">
+                    <p class="error-message" id="errorMessage">Invalid access code. Please try again.</p>
+                </div>
+                <button class="submit-btn" id="submitBtn">Access Tool</button>
+            </div>
+
+            <div class="support-links">
+                <a href="index.html">Don't have a code?</a>
+                <a href="mailto:bevan@learnerthreads.com?subject=Lost%20Language%20Lens%20Code">Lost your code?</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const validCodes = new Set([
+            'DEMO2024',
+            'PC2025',
+            'TRYME',
+            'O$2TEa7B'
+        ]);
+
+        // AUTO-REDIRECT FOR RETURNING USERS
+        (function() {
+            const storedCode = localStorage.getItem('languageFeaturesAccess');
+            if (validCodes.has(storedCode)) {
+                window.location.href = 'tool.html'; // Redirect to the new tool filename
+            }
+        })();
+
+        // ACCESS CODE VALIDATION
+        document.getElementById('submitBtn').addEventListener('click', (event) => {
+            event.preventDefault();
+            checkAccessCode();
+        });
+
+        document.getElementById('accessCode').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                checkAccessCode();
+            }
+        });
+
+        function checkAccessCode() {
+            const code = document.getElementById('accessCode').value.trim().toUpperCase();
+            const errorMessage = document.getElementById('errorMessage');
+
+            if (validCodes.has(code)) {
+                localStorage.setItem('languageFeaturesAccess', code);
+                window.location.href = 'tool.html'; // Redirect to the new tool filename
+            } else {
+                errorMessage.classList.add('show');
+                document.getElementById('accessCode').value = '';
+                document.getElementById('accessCode').focus();
+            }
+        }
+    </script>
+</body>
+</html>
