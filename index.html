@@ -3,36 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Language Lens | Learner Threads</title>
+    <title>Access Language Lens | Learner Threads</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
             min-height: 100vh;
             padding: 2rem;
             color: #2c3e50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-
         .container {
             max-width: 700px;
-            margin: 4rem auto;
+            width: 100%;
         }
-
         .hero {
             background: white;
             padding: 3rem;
             border-radius: 0.75rem;
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
             text-align: center;
-            margin-bottom: 2rem;
         }
-
         h1 {
             color: #1e3a5f;
             font-size: 2.5rem;
@@ -40,31 +38,19 @@
             margin-bottom: 1rem;
             letter-spacing: -0.02em;
         }
-
         .subtitle {
             color: #64748b;
             font-size: 1.15rem;
             margin-bottom: 2.5rem;
             line-height: 1.6;
         }
-
         .access-form {
             max-width: 400px;
             margin: 0 auto;
         }
-
         .input-group {
             margin-bottom: 1.5rem;
         }
-
-        label {
-            display: block;
-            color: #475569;
-            font-weight: 500;
-            margin-bottom: 0.5rem;
-            font-size: 0.95rem;
-        }
-
         input[type="text"] {
             width: 100%;
             padding: 0.875rem 1.25rem;
@@ -74,21 +60,12 @@
             transition: all 0.2s;
             background: #f8fafc;
         }
-
         input[type="text"]:focus {
             outline: none;
             border-color: #1e3a5f;
             background: white;
             box-shadow: 0 0 0 3px rgba(30, 58, 95, 0.1);
         }
-        #accessCode {
-            color: #9ca3af; /* A light, placeholder-like grey */
-        }
-
-        #accessCode:focus {
-            color: #2c3e50; /* The default dark text color */
-        }
-
         .submit-btn {
             width: 100%;
             background: #1e3a5f;
@@ -101,179 +78,30 @@
             cursor: pointer;
             transition: all 0.2s;
         }
-
         .submit-btn:hover {
             background: #2c4a6f;
             transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(30, 58, 95, 0.2);
         }
-
-        .submit-btn:active {
-            transform: translateY(0);
-        }
-
         .error-message {
             color: #dc2626;
             font-size: 0.9rem;
             margin-top: 0.5rem;
             display: none;
         }
-
         .error-message.show {
             display: block;
         }
-
-        /* Expandable Sections */
-        .info-sections {
+        .support-links {
             margin-top: 2rem;
+            font-size: 0.9rem;
         }
-
-        .info-card {
-            background: white;
-            border-radius: 0.5rem;
-            margin-bottom: 1rem;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-            overflow: hidden;
-        }
-
-        .info-header {
-            padding: 1.25rem 1.5rem;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: background 0.2s;
-        }
-
-        .info-header:hover {
-            background: #f8fafc;
-        }
-
-        .info-title {
-            color: #1e3a5f;
-            font-weight: 600;
-            font-size: 1.1rem;
-        }
-
-        .expand-icon {
-            color: #64748b;
-            font-size: 1.25rem;
-            transition: transform 0.3s;
-        }
-
-        .info-card.expanded .expand-icon {
-            transform: rotate(180deg);
-        }
-
-        .info-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-out;
-        }
-
-        .info-card.expanded .info-content {
-            max-height: 1000px;
-        }
-
-        .info-body {
-            padding: 0 1.5rem 1.5rem 1.5rem;
+        .support-links a {
             color: #475569;
-            line-height: 1.7;
-        }
-
-        .info-body h3 {
-            color: #1e3a5f;
-            font-size: 1rem;
-            margin: 1.5rem 0 0.75rem 0;
-        }
-
-        .info-body h3:first-child {
-            margin-top: 0;
-        }
-
-        .info-body ul {
-            margin: 0.75rem 0;
-            padding-left: 1.5rem;
-        }
-
-        .info-body li {
-            margin-bottom: 0.5rem;
-        }
-
-        .price {
-            color: #1e3a5f;
-            font-size: 1.75rem;
-            font-weight: 700;
-            margin: 1rem 0;
-        }
-
-        .buy-btn {
-            display: inline-block;
-            background: #059669;
-            color: white;
-            padding: 0.875rem 2rem;
-            border-radius: 0.5rem;
             text-decoration: none;
-            font-weight: 500;
-            transition: all 0.2s;
-            margin-top: 1rem;
+            margin: 0 0.75rem;
         }
-
-        .buy-btn:hover {
-            background: #047857;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
-        }
-
-        .features-list {
-            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
-            padding: 1.25rem;
-            border-radius: 0.5rem;
-            border: 1px solid #bae6fd;
-            margin: 1rem 0;
-        }
-
-        .features-list h4 {
-            color: #0c4a6e;
-            font-size: 0.875rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 0.75rem;
-        }
-
-        .features-list ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .features-list li {
-            color: #334155;
-            padding-left: 1.25rem;
-            position: relative;
-            margin-bottom: 0.5rem;
-        }
-
-        .features-list li::before {
-            content: '✓';
-            position: absolute;
-            left: 0;
-            color: #0c4a6e;
-            font-weight: bold;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                margin: 2rem auto;
-            }
-
-            h1 {
-                font-size: 2rem;
-            }
-
-            .hero {
-                padding: 2rem 1.5rem;
-            }
+        .support-links a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -281,138 +109,48 @@
     <div class="container">
         <div class="hero">
             <h1>Language Lens</h1>
-            <p class="subtitle">A comprehensive guide to literary devices, grammar, and sentence structure for text analysis</p>
+            <p class="subtitle">Enter your access code to begin.</p>
             
             <div class="access-form">
                 <div class="input-group">
-                    <label for="accessCode">Enter Your Access Code</label>
-                    <input type="text" id="accessCode" placeholder="Enter code here" autocomplete="off" value="Want to Explore? Enter TRYME">
+                    <input type="text" id="accessCode" placeholder="Enter code here" autocomplete="off">
                     <p class="error-message" id="errorMessage">Invalid access code. Please try again.</p>
                 </div>
                 <button class="submit-btn" id="submitBtn">Access Tool</button>
             </div>
-        </div>
 
-        <div class="info-sections">
-            <div class="info-card">
-                <div class="info-header" onclick="toggleSection(this)">
-                    <span class="info-title">What's Included?</span>
-                    <span class="expand-icon">▼</span>
-                </div>
-                <div class="info-content">
-                    <div class="info-body">
-                        <div class="features-list">
-                            <h4>44 Language Features</h4>
-                            <ul>
-                                <li>Complete A-Z reference of literary devices</li>
-                                <li>Parts of speech with analytical guidance</li>
-                                <li>Sentence structure types</li>
-                                <li>Sound devices, imagery, comparison techniques</li>
-                                <li>Emphasis, contrast, and symbolism</li>
-                            </ul>
-                        </div>
-
-                        <h3>Each feature includes:</h3>
-                        <ul>
-                            <li><strong>Clear definition</strong> with authentic examples</li>
-                            <li><strong>Effect analysis</strong> - what the technique does</li>
-                            <li><strong>Analytical questions</strong> - prompts for deeper thinking</li>
-                            <li><strong>Purpose framework</strong> - connecting to wider contexts:
-                                <ul>
-                                    <li>Connect to the Wider World</li>
-                                    <li>Understand Ourselves</li>
-                                    <li>Recognise the Craft</li>
-                                    <li>Question the Text</li>
-                                </ul>
-                            </li>
-                        </ul>
-
-                        <h3>Tools & Features:</h3>
-                        <ul>
-                            <li><strong>Daily Quote Analysis</strong> to model the analytical process with real examples</li>
-                            <li>Category filtering (Sound Devices, Comparison, Structure, etc.)</li>
-                            <li>Real-time search across all content</li>
-                            <li>Bookmark system for favourite features</li>
-                            <li>Flashcard mode for study and revision</li>
-                            <li>Print-friendly layout</li>
-                            <li>Mobile responsive design</li>
-                            <li>No sign-in or data collection</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <div class="info-card">
-                <div class="info-header" onclick="toggleSection(this)">
-                    <span class="info-title">Who Is This For?</span>
-                    <span class="expand-icon">▼</span>
-                </div>
-                <div class="info-content">
-                    <div class="info-body">
-                        <h3>Perfect for:</h3>
-                        <ul>
-                            <li><strong>Secondary students</strong> analysing texts for close reading and exams</li>
-                            <li><strong>Teachers</strong> seeking a comprehensive reference to share with students</li>
-                            <li><strong>English departments</strong> wanting a consistent, quality resource</li>
-                            <li><strong>Parents</strong> supporting learners with homework and study</li>
-                        </ul>
-
-                        <h3>Designed for learning:</h3>
-                        <ul>
-                            <li>Sophisticated yet accessible language</li>
-                            <li>Analytical depth without overwhelming detail</li>
-                            <li>Questions that promote critical thinking</li>
-                            <li>Connections to real purposes of English study</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <div class="info-card">
-                <div class="info-header" onclick="toggleSection(this)">
-                    <span class="info-title">Purchase Access</span>
-                    <span class="expand-icon">▼</span>
-                </div>
-                <div class="info-content">
-                    <div class="info-body">
-                        <h3>Individual Access</h3>
-                        <p>Perfect for supporting your child's learning.</p>
-                        <p class="price">$15 NZD/year</p>
-                        <p>Annual access for one user. After purchase, your unique code will be <strong>manually generated and emailed</strong> to you.</p>
-                        <a href="https://buy.stripe.com/aFadRbfgv2ZReIVbFA4Ni04" class="buy-btn" target="_blank" rel="noopener noreferrer">Buy Now</a>
-
-                        <h3>School Licence</h3>
-                        <p>Perfect for departments wanting access for their whole cohort.</p>
-                        <p class="price">$199 NZD/year</p>
-                        <p>Unlimited annual access for your entire school. Please get in contact to find out more.</p>
-                        <a href="mailto:bevan@learnerthreads.com?subject=Language%20Lens%20School%20Licence%20Inquiry" class="buy-btn contact">Contact Us</a>
-
-                        <h3>What you get:</h3>
-                        <ul>
-                            <li><strong>Manual access code delivery</strong> via email (please allow up to 12 hours).</li>
-                            <li>Annual subscription with all updates included.</li>
-                            <li>Works on any device with a web browser.</li>
-                            <li>No personal data collection within the tool.</li>
-                        </ul>
-                    </div>
-                </div>
+            <div class="support-links">
+                <a href="index.html">Don't have a code?</a>
+                <a href="mailto:bevan@learnerthreads.com?subject=Lost%20Language%20Lens%20Code">Lost your code?</a>
             </div>
         </div>
     </div>
 
     <script>
-        // Access code validation
-        // ADD YOUR VALID CODES HERE
         const validCodes = new Set([
             'DEMO2024',
             'PC2025',
             'TRYME',
-            'O$2TE@7B'
+            'O$2TEa7B'
         ]);
 
-        document.getElementById('submitBtn').addEventListener('click', checkAccessCode);
+        // AUTO-REDIRECT FOR RETURNING USERS
+        (function() {
+            const storedCode = localStorage.getItem('languageFeaturesAccess');
+            if (validCodes.has(storedCode)) {
+                window.location.href = 'tool.html'; // Redirect to the new tool filename
+            }
+        })();
+
+        // ACCESS CODE VALIDATION
+        document.getElementById('submitBtn').addEventListener('click', (event) => {
+            event.preventDefault();
+            checkAccessCode();
+        });
+
         document.getElementById('accessCode').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
+                e.preventDefault();
                 checkAccessCode();
             }
         });
@@ -422,29 +160,12 @@
             const errorMessage = document.getElementById('errorMessage');
 
             if (validCodes.has(code)) {
-                // Store the code in localStorage
                 localStorage.setItem('languageFeaturesAccess', code);
-                // Redirect to the main tool
-                window.location.href = 'language-lens.html';
+                window.location.href = 'tool.html'; // Redirect to the new tool filename
             } else {
                 errorMessage.classList.add('show');
                 document.getElementById('accessCode').value = '';
                 document.getElementById('accessCode').focus();
-            }
-        }
-
-        function toggleSection(header) {
-            const card = header.parentElement;
-            const wasExpanded = card.classList.contains('expanded');
-            
-            // Close all cards
-            document.querySelectorAll('.info-card').forEach(c => {
-                c.classList.remove('expanded');
-            });
-            
-            // Open clicked card if it wasn't already open
-            if (!wasExpanded) {
-                card.classList.add('expanded');
             }
         }
     </script>
